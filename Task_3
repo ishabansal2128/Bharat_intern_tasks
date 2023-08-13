@@ -14,7 +14,6 @@ sns.countplot(x='Attrition', data=employee_data)
 plt.title('Attrition Distribution')
 plt.show()
 
-
 attrition_corr = employee_data.corr()
 sns.heatmap(attrition_corr, annot=True, cmap='coolwarm')
 plt.title('Correlation Heatmap')

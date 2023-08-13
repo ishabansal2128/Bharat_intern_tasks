@@ -1,0 +1,44 @@
+# Employee and attrition and performance
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
+employee_data = pd.read_csv('employee_data.csv')  
+
+sns.countplot(x='Attrition', data=employee_data)
+plt.title('Attrition Distribution')
+plt.show()
+
+
+attrition_corr = employee_data.corr()
+sns.heatmap(attrition_corr, annot=True, cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
+
+selected_features = ['DistanceFromHome', 'JobRole', ...] 
+X = employee_data[selected_features]
+y = employee_data['Attrition']
+
+X = pd.get_dummies(X, columns=['JobRole', ...], drop_first=True)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print(classification_report(y_test, y_pred))
+print(confusion_matrix(y_test, y_pred))
+
+feature_importances = model.feature_importances_
+important_features = pd.Series(feature_importances, index=X.columns)
+important_features.sort_values(ascending=False, inplace=True)
+print(important_features)
+
+
